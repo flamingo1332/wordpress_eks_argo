@@ -20,7 +20,7 @@ spec:
   source:
     repoURL: 'https://charts.bitnami.com/bitnami' # URL of the Helm chart repository
     chart: wordpress
-    targetRevision: 'latest' 
+    targetRevision: '19.0.4' 
     helm:
       values: |-
         wordpressUsername: user
