@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: externaldns
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/kubernetes-sigs/external-dns.git'  # Replace with your Git repo URL
+    path: 'kubernetes'  # Replace with the path to your ExternalDNS manifests
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: externaldns-namespace
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
