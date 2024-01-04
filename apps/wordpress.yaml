@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress
+  namespace: argocd
+  labels:
+    environment: prod
+spec:
+  project: default      
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: wordpress
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami' # URL of the Helm chart repository
+    chart: wordpress
+    targetRevision: 'latest' 
+    helm:
+      values: |-
+        # wordpressUsername: user
+        # wordpressPassword: password
+        # wordpressEmail: user@example.com
+        # wordpressBlogName: My Blog
+
+        # mariadb:
+        #   auth:
+        #     rootPassword: mariadb-root-password
+        #     username: wordpress
+        #     password: mariadb-password
+        #     database: wordpress_db
+
+        persistence:
+          enabled: true
+          size: 4Gi
+
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 200m
+          limits:
+            memory: 1024Mi
+            cpu: 500m
+
+        ingress:
+          enabled: false
+          # hostname: wordpress.example.com
+
+        
+        
