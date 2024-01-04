@@ -46,7 +46,8 @@ spec:
           limits:
             memory: 1024Mi
             cpu: 500m
-
+        service:
+          type: NodePort
         # ingress:
         #   enabled: false
         #   hostname: wordpress.example.com
