@@ -23,17 +23,17 @@ spec:
     targetRevision: 'latest' 
     helm:
       values: |-
-        # wordpressUsername: user
-        # wordpressPassword: password
-        # wordpressEmail: user@example.com
-        # wordpressBlogName: My Blog
+        wordpressUsername: user
+        wordpressPassword: password
+        wordpressEmail: user@example.com
+        wordpressBlogName: My Blog
 
-        # mariadb:
-        #   auth:
-        #     rootPassword: mariadb-root-password
-        #     username: wordpress
-        #     password: mariadb-password
-        #     database: wordpress_db
+        mariadb:
+          auth:
+            rootPassword: mariadb-root-password
+            username: wordpress
+            password: mariadb-password
+            database: wordpress_db
 
         persistence:
           enabled: true
@@ -47,9 +47,9 @@ spec:
             memory: 1024Mi
             cpu: 500m
 
-        ingress:
-          enabled: false
-          # hostname: wordpress.example.com
+        # ingress:
+        #   enabled: false
+        #   hostname: wordpress.example.com
 
         
         
