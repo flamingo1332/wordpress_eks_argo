@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://your-git-repo-url.git'
+    repoURL: 'https://github.com/flamingo1332/wordpress_eks_argo.git'
     path: 'apps'
     targetRevision: HEAD
   destination:
