@@ -27,20 +27,20 @@ spec:
     targetRevision: '19.0.4' 
     helm:
       values: |-
+        mariadb:
+          enabled: false
+
         wordpressUsername: user
         wordpressPassword: password
         wordpressEmail: user@example.com
         wordpressBlogName: My Blog
 
         externalDatabase:
-          host: localhost  # Replace with your MySQL host IP
-          port: 3306             # Default MySQL port, change if different
+          host: 172.18.0.3
+          port: 3306
           user: user
           password: password
           database: wordpress
-
-        mariadb:
-          enabled: false
 
         persistence:
           enabled: true
