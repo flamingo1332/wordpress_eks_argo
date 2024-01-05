@@ -3,8 +3,12 @@ kind: Application
 metadata:
   name: wordpress
   namespace: argocd
-  labels:
-    environment: prod
+  # labels:
+  #   environment: prod
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default      
   destination:
@@ -28,12 +32,15 @@ spec:
         wordpressEmail: user@example.com
         wordpressBlogName: My Blog
 
+        externalDatabase:
+          host: localhost  # Replace with your MySQL host IP
+          port: 3306             # Default MySQL port, change if different
+          user: user
+          password: password
+          database: wordpress
+
         mariadb:
-          auth:
-            rootPassword: mariadb-root-password
-            username: wordpress
-            password: mariadb-password
-            database: wordpress_db
+          enabled: false
 
         persistence:
           enabled: true
