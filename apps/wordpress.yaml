@@ -49,8 +49,14 @@ spec:
 
 
         persistence:
-          enabled: true
-          size: 4Gi
+          enabled: false
+          # size: 4Gi
+
+        wordpressConfiguration:
+          wpConfig: |
+            define('WP_DEBUG', true);
+            define('WP_DEBUG_LOG', true);
+            define('WP_DEBUG_DISPLAY', false);
 
         resources:
           requests:
