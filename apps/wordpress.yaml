@@ -6,7 +6,7 @@ metadata:
   # labels:
   #   environment: prod
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "21"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
@@ -28,35 +28,28 @@ spec:
     helm:
       values: |-
         mariadb:
-          enabled: false
+          enabled: true
 
         wordpressUsername: user
         wordpressPassword: password
         wordpressEmail: user@example.com
         wordpressBlogName: My Blog
 
-        externalDatabase:
-          host: 172.18.0.3
-          port: 3306
-          user: user
-          password: password
-          database: wordpress
+        # externalDatabase:
+        #   host: 172.18.0.3
+        #   port: 3306
+        #   user: user
+        #   password: password
+        #   database: wordpress
 
         livenessProbe:
-          enabled: false
+          enabled: true
         readinessProbe:
-          enabled: false
-
+          enabled: true
 
         persistence:
-          enabled: false
-          # size: 4Gi
-
-        wordpressConfiguration:
-          wpConfig: |
-            define('WP_DEBUG', true);
-            define('WP_DEBUG_LOG', true);
-            define('WP_DEBUG_DISPLAY', false);
+          enabled: true
+          size: 4Gi
 
         resources:
           requests:
