@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress
+  namespace: argocd
+  # labels:
+  #   environment: prod
+  annotations:
+    argocd.argoproj.io/sync-wave: "21"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default      
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: wordpress
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami' # URL of the Helm chart repository
+    chart: wordpress
+    targetRevision: '19.0.4' 
+    helm:
+      values: |-
+        mariadb:
+          enabled: true
+
+        wordpressUsername: user
+        wordpressPassword: password
+        wordpressEmail: user@example.com
+        wordpressBlogName: My Blog
+
+        # externalDatabase:
+        #   host: 172.18.0.3
+        #   port: 3306
+        #   user: user
+        #   password: password
+        #   database: wordpress
+
+        livenessProbe:
+          enabled: true
+        readinessProbe:
+          enabled: true
+
+        persistence:
+          enabled: true
+          size: 4Gi
+
+        resources:
+          requests:
+            memory: 512Mi
+            cpu: 300m
+          limits:
+            memory: 1024Mi
+            cpu: 500m
+        service:
+          type: NodePort
+        # ingress:
+        #   enabled: false
+        #   hostname: wordpress.example.com
+
+        

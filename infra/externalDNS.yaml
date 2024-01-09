@@ -1,18 +1,37 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: externaldns
+  name: external-dns
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "21"
 spec:
   project: default
-  source:
-    repoURL: 'https://github.com/kubernetes-sigs/external-dns.git'  # Replace with your Git repo URL
-    path: 'kubernetes'  # Replace with the path to your ExternalDNS manifests
-    targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: externaldns-namespace
+    namespace: kube-system
   syncPolicy:
     automated:
       selfHeal: true
       prune: true
+  source:
+    repoURL: 'https://github.com/kubernetes-sigs/external-dns.git'
+    chart: external-dns
+    targetRevision: '5.4.4'  # Use the latest stable version
+    helm:
+      values: |-
+        provider: aws
+        aws:
+          region: YOUR_AWS_REGION
+          zoneType: public # or private depending on your use case
+        rbac:
+          create: true
+        serviceAccount:
+          create: true
+          name: external-dns
+          annotations:
+            eks.amazonaws.com/role-arn: YOUR_EXTERNAL_DNS_IAM_ROLE_ARN
+        # Additional configuration parameters
+
+
+# route53 와 함께 사용해야 하기 때문에 configuration 만지는것 복잡할듯.

@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-autoscaler
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "21"
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+  source:
+    repoURL: 'https://kubernetes.github.io/autoscaler'
+    chart: kube-system
+    targetRevision: '9.34.1'  # Use the latest stable version compatible with your EKS version
+    helm:
+      values: |-
+        autoDiscovery:
+          clusterName: YOUR_EKS_CLUSTER_NAME
+        awsRegion: YOUR_AWS_REGION
+        rbac:
+          create: true
+        serviceAccount:
+          create: true
+          name: cluster-autoscaler
+          annotations:
+            eks.amazonaws.com/role-arn: YOUR_IRSA_ROLE_ARN
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+

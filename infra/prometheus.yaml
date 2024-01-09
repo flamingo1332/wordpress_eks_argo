@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"  # Adjust the sync wave as needed
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring  # Assuming you have a 'monitoring' namespace
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: 'https://prometheus-community.github.io/helm-charts'  # Prometheus Helm chart repository
+    chart: kube-prometheus-stack
+    targetRevision: '15.4.4'  # Use the latest stable version compatible with your cluster
+    helm:
+      values: |-
+        prometheus:
+          prometheusSpec:
+            serviceMonitorSelectorNilUsesHelmValues: false
+            podMonitorSelectorNilUsesHelmValues: false
+            retention: 7d  # Adjust retention period as needed
+        alertmanager:
+          enabled: true  # Enable or disable Alertmanager
+        grafana:
+          enabled: true  # Enable or disable Grafana
+          adminPassword: password
+          
