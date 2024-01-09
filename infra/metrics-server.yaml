@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   destination:
-    server: https://kubernetes.default.svc  # Targeting the EKS cluster
+    server: https://kubernetes.default.svc  
     namespace: kube-system
   syncPolicy:
     automated:
@@ -19,4 +19,8 @@ spec:
   source:
     repoURL: https://kubernetes-sigs.github.io/metrics-server/
     chart: metrics-server
-    targetRevision: 3.11.0  # Replace with the actual desired version
+    targetRevision: 3.11.0  
+    helm:
+      values: |-
+        apiService
+          insecureSkipTLSVerify: false
