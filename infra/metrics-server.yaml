@@ -3,21 +3,20 @@ kind: Application
 metadata:
   name: metrics-server
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "21"
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc  # Targeting the EKS cluster
     namespace: kube-system
   syncPolicy:
     automated:
-      selfHeal: true
       prune: true
+      selfHeal: true
   source:
-    repoURL: 'https://kubernetes-sigs.github.io/metrics-server/'  
+    repoURL: https://kubernetes-sigs.github.io/metrics-server/
     chart: metrics-server
-    targetRevision: '3.10.0'  
-    helm:
-      values: |-
-        args:
-          - --kubelet-insecure-tls  # Use this only if your cluster uses self-signed certificates
-          # Add other custom values if needed
+    targetRevision: 3.11.0  # Replace with the actual desired version
