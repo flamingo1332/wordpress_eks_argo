@@ -19,17 +19,17 @@ spec:
   source:
     repoURL: 'https://prometheus-community.github.io/helm-charts'  # Prometheus Helm chart repository
     chart: kube-prometheus-stack
-    targetRevision: '15.4.4'  # Use the latest stable version compatible with your cluster
+    targetRevision: '25.8.2'  # Use the latest stable version compatible with your cluster
     helm:
       values: |-
         prometheus:
           prometheusSpec:
             serviceMonitorSelectorNilUsesHelmValues: false
             podMonitorSelectorNilUsesHelmValues: false
-            retention: 7d  # Adjust retention period as needed
+            retention: 2d  
         alertmanager:
-          enabled: true  # Enable or disable Alertmanager
+          enabled: false  
         grafana:
-          enabled: true  # Enable or disable Grafana
+          enabled: true  
           adminPassword: password
           
